@@ -29,7 +29,7 @@ struct ContentView: View {
                 Button {
                     if leftScore > 0 { leftScore -= 1 }
                 } label: {
-                    Text("- ซ้าย")
+                    Text("-")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -38,7 +38,7 @@ struct ContentView: View {
                     leftScore = 0
                     rightScore = 0
                 } label: {
-                    Text("เริ่มใหม่")
+                    Text("ใหม่")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
@@ -46,7 +46,7 @@ struct ContentView: View {
                 Button {
                     if rightScore > 0 { rightScore -= 1 }
                 } label: {
-                    Text("- ขวา")
+                    Text("-")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
