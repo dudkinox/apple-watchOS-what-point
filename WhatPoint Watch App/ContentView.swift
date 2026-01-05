@@ -1,93 +1,89 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var leftScore: Int = 0
-    @State private var rightScore: Int = 0
+    @State private var leftScore = 0
+    @State private var rightScore = 0
+    @State private var runtime = ExtendedRuntimeManager()
 
     var body: some View {
-        VStack(spacing: 10) {
-            // Score area (tap to +1)
-            HStack(spacing: 8) {
-                ScoreSideView(
-                    title: "ฉัน",
-                    score: leftScore,
-                    background: .green,
-                    onTap: { leftScore += 1 }
-                )
-
-                ScoreSideView(
-                    title: "มัน",
-                    score: rightScore,
-                    background: .red,
-                    onTap: { rightScore += 1 }
-                )
+        ZStack {
+            HStack(spacing: 0) {
+                Color.green.opacity(0.85)
+                Color.red.opacity(0.85)
             }
-            .frame(maxHeight: .infinity)
+            .ignoresSafeArea()
 
-            // Controls
-            HStack(spacing: 8) {
-                Button {
-                    if leftScore > 0 { leftScore -= 1 }
-                } label: {
-                    Text("-")
-                        .frame(maxWidth: .infinity)
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Button {
+                        leftScore = 0
+                        rightScore = 0
+                    } label: {
+                        Text("Reset")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                    .buttonStyle(.plain)
+                    Spacer()
                 }
-                .buttonStyle(.bordered)
+                .padding(.top, 6)
 
-                Button(role: .destructive) {
-                    leftScore = 0
-                    rightScore = 0
-                } label: {
-                    Text("ใหม่")
-                        .frame(maxWidth: .infinity)
+                Spacer()
+
+                HStack(spacing: 0) {
+                    VStack(spacing: 6) {
+                        Text("ฉัน")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.95))
+
+                        Text("\(leftScore)")
+                            .font(.system(size: 56, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
+
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture { leftScore += 1 }
+                    .onLongPressGesture { if leftScore > 0 { leftScore -= 1 } }
+
+                    VStack(spacing: 6) {
+                        Text("มัน")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.95))
+
+                        Text("\(rightScore)")
+                            .font(.system(size: 56, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
+
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.85))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture { rightScore += 1 }
+                    .onLongPressGesture { if rightScore > 0 { rightScore -= 1 } }
                 }
-                .buttonStyle(.bordered)
+                .padding(.horizontal, 10)
 
-                Button {
-                    if rightScore > 0 { rightScore -= 1 }
-                } label: {
-                    Text("-")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-            }
+                Spacer()
 
-            // Footer
-            Text("Create by Guitar v0.0.1")
-                .font(.caption2)
-                .foregroundStyle(.green)
-                .opacity(0.9)
-                .padding(.top, 2)
-        }
-        .padding(.horizontal, 6)
-        .padding(.vertical, 8)
-    }
-}
-
-private struct ScoreSideView: View {
-    let title: String
-    let score: Int
-    let background: Color
-    let onTap: () -> Void
-
-    var body: some View {
-        Button(action: onTap) {
-            VStack(spacing: 2) {
-                Text(title)
+                Text("Create by Guitar! v0.0.3")
                     .font(.caption2)
-                    .opacity(0.9)
-
-                Text("\(score)")
-                    .font(.system(size: 42, weight: .heavy, design: .rounded))
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+                    .foregroundStyle(.white.opacity(0.7))
+                    .padding(.bottom, 6)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .buttonStyle(.plain)
-        .padding(.vertical, 10)
-        .background(background.opacity(0.9))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .onAppear { runtime.start() }
+        .onDisappear { runtime.stop() }
     }
 }
 
