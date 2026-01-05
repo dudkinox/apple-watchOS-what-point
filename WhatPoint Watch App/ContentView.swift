@@ -8,7 +8,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             HStack(spacing: 0) {
-                Color.green.opacity(0.85)
+                Color.blue.opacity(0.85)
                 Color.red.opacity(0.85)
             }
             .ignoresSafeArea()
